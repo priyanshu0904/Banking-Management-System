@@ -36,12 +36,12 @@ public class BankServiceImpl implements BankService {
     };
 
     private final Validation<String> validateType = (type) -> {
-        if(type == null || !(type.equalsIgnoreCase("SAVINGS")) || !(type.equalsIgnoreCase("CURRENT")))
+        if(type == null || !(type.equalsIgnoreCase("SAVINGS")) && !(type.equalsIgnoreCase("CURRENT")))
             throw new ValidationException("Account type not exists, must be either SAVINGS or CURRENT");
     };
 
     private final Validation<Double> validateAmount = (amount) -> {
-        if(amount == null || amount > 0)
+        if(amount == null || amount < 0)
             throw new ValidationException("Please enter a valid amount");
     };
 
@@ -70,6 +70,7 @@ public class BankServiceImpl implements BankService {
 
     @Override
     public void deposit(String accountNumber, Double amount, String note) {
+        validateAmount.validate(amount);
         Account account = accountRepository.findByNumber(accountNumber)
                 .orElseThrow(() -> new AccountNotFoundException("Account not found " + accountNumber));
         account.setBalance(account.getBalance() + amount);
