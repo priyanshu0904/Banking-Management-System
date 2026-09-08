@@ -7,10 +7,12 @@ import domain.Type;
 import exceptions.AccountNotFoundException;
 import exceptions.InsufficientFundsException;
 import exceptions.SameAccountTransferException;
+import exceptions.ValidationException;
 import repository.AccountRepository;
 import repository.CustomerRepository;
 import repository.TransactionRepository;
 import service.BankService;
+import util.Validation;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -23,8 +25,31 @@ public class BankServiceImpl implements BankService {
     private final AccountRepository accountRepository = new AccountRepository();
     private final TransactionRepository transactionRepository = new TransactionRepository();
     private final CustomerRepository customerRepository= new CustomerRepository();
+
+    private final Validation<String> validateName = name -> {
+        if(name == null || name.isBlank()) throw new ValidationException("Name is required");
+    };
+
+    private final Validation<String> validateEmail = (email) -> {
+        if(email == null || email.isBlank() || !email.contains("@")) throw new ValidationException("Correct Email is required");
+
+    };
+
+    private final Validation<String> validateType = (type) -> {
+        if(type == null || !(type.equalsIgnoreCase("SAVINGS")) || !(type.equalsIgnoreCase("CURRENT")))
+            throw new ValidationException("Account type not exists, must be either SAVINGS or CURRENT");
+    };
+
+    private final Validation<Double> validateAmount = (amount) -> {
+        if(amount == null || amount > 0)
+            throw new ValidationException("Please enter a valid amount");
+    };
+
     @Override
     public String openAccount(String name, String email, String accountType) {
+        validateName.validate(name);
+        validateEmail.validate(email);
+        validateType.validate(accountType);
         String customerId = UUID.randomUUID().toString();
         //Create Customer
         Customer c = new Customer(customerId, name, email);
