@@ -29,9 +29,9 @@ public class Main {
 
             switch (choice){
                 case "1" -> openAccount(sc, bankService);
-                case "2" -> deposit(sc);
-                case "3" -> withdraw(sc);
-                case "4" -> transfer(sc);
+                case "2" -> deposit(sc, bankService);
+                case "3" -> withdraw(sc, bankService);
+                case "4" -> transfer(sc, bankService);
                 case "5" -> statement(sc);
                 case "6" -> listAccounts(sc, bankService);
                 case "" -> searchAccounts(sc);
@@ -50,16 +50,39 @@ public class Main {
         System.out.print("Initial Deposit (optional, blank for 0): ");
         String amountStr = sc.nextLine().trim();
         Double initial = Double.valueOf(amountStr);
-        bankService.openAccount(name, email, type);
+        String accountNumber = bankService.openAccount(name, email, type);
+        if(initial > 0){
+            bankService.deposit(accountNumber, initial, "First Deposit");
+        }
+        System.out.println("Account opened with account number: " + accountNumber);
     }
 
-    private static void deposit(Scanner sc) {
+    private static void deposit(Scanner sc, BankService bankService) {
+        System.out.print("Account Number: ");
+        String accountNumber = sc.nextLine().trim();
+        System.out.print("Deposit Amount: ");
+        Double amount = Double.valueOf(sc.nextLine().trim());
+        bankService.deposit(accountNumber, amount, "Deposit");
+        System.out.println("Amount Deposited");
     }
 
-    private static void withdraw(Scanner sc) {
+    private static void withdraw(Scanner sc, BankService bankService) {
+        System.out.print("Account Number: ");
+        String accountNumber = sc.nextLine().trim();
+        System.out.print("Withdraw Amount: ");
+        Double amount = Double.valueOf(sc.nextLine().trim());
+        bankService.withdraw(accountNumber, amount, "Withdrawal");
+        System.out.println("Amount Withdrawn");
     }
 
-    private static void transfer(Scanner sc) {
+    private static void transfer(Scanner sc, BankService bankService) {
+        System.out.print("From Account Number: ");
+        String from = sc.nextLine().trim();
+        System.out.print("To Account Number: ");
+        String to = sc.nextLine().trim();
+        System.out.print("Amount: ");
+        Double amount = Double.valueOf(sc.nextLine().trim());
+        bankService.transfer(from, to, amount, "Transfer");
     }
 
     private static void statement(Scanner sc) {
