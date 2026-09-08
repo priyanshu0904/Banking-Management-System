@@ -81,6 +81,7 @@ public class BankServiceImpl implements BankService {
 
     @Override
     public void withdraw(String accountNumber, Double amount, String note) {
+        validateAmount.validate(amount);
         Account account = accountRepository.findByNumber(accountNumber)
                 .orElseThrow(() -> new AccountNotFoundException("Account not found " + accountNumber));
         if(account.getBalance().compareTo(amount) < 0){
@@ -94,6 +95,7 @@ public class BankServiceImpl implements BankService {
 
     @Override
     public void transfer(String fromAcc, String toAcc, Double amount, String note) {
+        validateAmount.validate(amount);
         if(fromAcc.equals(toAcc))
             throw new SameAccountTransferException("Can not transfer to your own account");
         Account from = accountRepository.findByNumber(fromAcc)

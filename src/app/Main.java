@@ -1,5 +1,6 @@
 package app;
 
+import exceptions.ValidationException;
 import service.BankService;
 import service.impl.BankServiceImpl;
 
@@ -53,7 +54,9 @@ public class Main {
             amountStr = "0";
         Double initial = Double.valueOf(amountStr);
         String accountNumber = bankService.openAccount(name, email, type);
-        if(initial > 0){
+        if(initial < 0){
+            throw new ValidationException("Amount should be valid");
+        }else {
             bankService.deposit(accountNumber, initial, "First Deposit");
         }
         System.out.println("Account opened with account number: " + accountNumber);
