@@ -107,7 +107,8 @@ flowchart LR
 
     BSI --> V
     BSI --> E
-
+`````
+```text
 Project Structure
 
 Banking-Management-System/
@@ -142,7 +143,7 @@ Banking-Management-System/
 │
 ├── .gitignore
 └── README.md
-
+```
 Architecture Layers
 
 Presentation Layer
