@@ -505,7 +505,7 @@ Testing
 DevOps
 
 - Maven / Gradle
-- Docker
+- Docker / Kubernetes 
 - CI/CD
 - Linux
 - Cloud deployment
