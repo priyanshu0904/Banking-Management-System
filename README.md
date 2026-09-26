@@ -18,7 +18,7 @@ A console-based Banking Management System built using Java to demonstrate practi
 - Layered architecture
 - Repository-based data management
 
-## Tech Stack
+## Tec
 
 | Technology | Usage |
 |---|---|
